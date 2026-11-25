@@ -3,6 +3,13 @@
 Fisly is an offline-first expense tracker that helps you capture receipts and
 understand your spending.
 
+## Current functionality
+
+- Offline expense CRUD with default and custom categories.
+- Merchant-name category suggestions for common Turkish merchants.
+- Monthly spending total, category breakdown, and six-month trend charts.
+- On-device receipt text recognition with locally stored receipt images.
+
 ## Getting started
 
 1. Install the Flutter stable SDK and Android Studio.

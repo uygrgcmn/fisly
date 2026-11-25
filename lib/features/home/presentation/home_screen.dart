@@ -1,8 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/utils/currency_formatter.dart';
 import '../../../features/categories/domain/category.dart';
+import '../../../features/categories/presentation/category_management_sheet.dart';
 import '../../../features/categories/presentation/categories_providers.dart';
+import '../../../features/dashboard/domain/spending_analytics.dart';
+import '../../../features/dashboard/presentation/dashboard_overview.dart';
 import '../../../features/expenses/domain/expense.dart';
 import '../../../features/expenses/presentation/expense_form_sheet.dart';
 import '../../../features/expenses/presentation/expenses_providers.dart';
@@ -16,7 +20,17 @@ class HomeScreen extends ConsumerWidget {
     final categoriesAsync = ref.watch(categoriesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Fisly')),
+      appBar: AppBar(
+        title: const Text('Fisly'),
+        actions: [
+          IconButton(
+            key: const Key('manage-categories-button'),
+            tooltip: 'Kategorileri yönet',
+            onPressed: () => _showCategoryManagement(context),
+            icon: const Icon(Icons.category_outlined),
+          ),
+        ],
+      ),
       body: expensesAsync.when(
         data: (expenses) => categoriesAsync.when(
           data: (categories) =>
@@ -75,13 +89,26 @@ class HomeScreen extends ConsumerWidget {
     final categoryNames = {
       for (final category in categories) category.id: category.name,
     };
+    final summary = const SpendingAnalytics().summarize(
+      expenses: expenses,
+      categories: categories,
+      currentDate: DateTime.now(),
+    );
 
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
-      itemCount: expenses.length,
+      itemCount: expenses.length + 2,
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
-        final expense = expenses[index];
+        if (index == 0) return DashboardOverview(summary: summary);
+        if (index == 1) {
+          return Text(
+            'Son harcamalar',
+            style: Theme.of(context).textTheme.titleLarge,
+          );
+        }
+
+        final expense = expenses[index - 2];
         final categoryName = expense.categoryId == null
             ? 'Kategorisiz'
             : categoryNames[expense.categoryId] ?? 'Kategorisiz';
@@ -96,7 +123,7 @@ class HomeScreen extends ConsumerWidget {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(_formatAmount(expense.amountMinorUnits)),
+                Text(formatTryMinorUnits(expense.amountMinorUnits)),
                 PopupMenuButton<String>(
                   tooltip: 'Harcama işlemleri',
                   onSelected: (action) {
@@ -133,6 +160,14 @@ class HomeScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       builder: (context) => ExpenseFormSheet(expense: expense),
+    );
+  }
+
+  void _showCategoryManagement(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => const CategoryManagementSheet(),
     );
   }
 
@@ -174,12 +209,6 @@ class HomeScreen extends ConsumerWidget {
           .showSnackBar(SnackBar(content: Text('Harcama silinemedi: $error')));
     }
   }
-}
-
-String _formatAmount(int amountMinorUnits) {
-  final wholeUnits = amountMinorUnits ~/ 100;
-  final minorUnits = (amountMinorUnits % 100).toString().padLeft(2, '0');
-  return '₺$wholeUnits,$minorUnits';
 }
 
 String _formatDate(DateTime date) {
