@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 
+@DataClassName('CategoryRow')
 class Categories extends Table {
   TextColumn get id => text().clientDefault(() => Uuid().v4())();
 

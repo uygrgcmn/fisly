@@ -34,10 +34,11 @@ Keep real credentials in `.env`; it is excluded from Git.
 
 ## Project structure
 
-- `lib/core/` contains app-wide routing and theme.
-- `lib/features/` contains feature-specific screens and, as features grow, their
-  data and domain layers.
+- `lib/core/` contains app-wide routing, theme, and database setup.
+- `lib/features/` contains feature-specific data, domain, and presentation layers.
 - `test/` contains automated tests.
 
-The UI will use Drift as its local source of truth. Supabase configuration
-belongs in local, untracked build defines; never commit real credentials.
+The expense UI reads and writes through Riverpod providers and repositories.
+Drift is the local source of truth, and default categories are seeded on first
+access. Supabase configuration belongs in local, untracked build defines; never
+commit real credentials.
