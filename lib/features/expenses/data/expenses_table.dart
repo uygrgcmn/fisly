@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../categories/data/categories_table.dart';
 
+@DataClassName('ExpenseRow')
 class Expenses extends Table {
   TextColumn get id => text().clientDefault(() => Uuid().v4())();
 

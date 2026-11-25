@@ -358,7 +358,8 @@ class CategoriesCompanion extends UpdateCompanion<Category> {
   }
 }
 
-class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
+class $ExpensesTable extends Expenses
+    with TableInfo<$ExpensesTable, ExpenseRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -496,7 +497,7 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
   static const String $name = 'expenses';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Expense> instance, {
+    Insertable<ExpenseRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -579,9 +580,9 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Expense map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ExpenseRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Expense(
+    return ExpenseRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -631,7 +632,7 @@ class $ExpensesTable extends Expenses with TableInfo<$ExpensesTable, Expense> {
   }
 }
 
-class Expense extends DataClass implements Insertable<Expense> {
+class ExpenseRow extends DataClass implements Insertable<ExpenseRow> {
   final String id;
   final String merchant;
   final int amountMinorUnits;
@@ -642,7 +643,7 @@ class Expense extends DataClass implements Insertable<Expense> {
   final String? receiptImagePath;
   final DateTime createdAt;
   final DateTime updatedAt;
-  const Expense({
+  const ExpenseRow({
     required this.id,
     required this.merchant,
     required this.amountMinorUnits,
@@ -695,12 +696,12 @@ class Expense extends DataClass implements Insertable<Expense> {
     );
   }
 
-  factory Expense.fromJson(
+  factory ExpenseRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Expense(
+    return ExpenseRow(
       id: serializer.fromJson<String>(json['id']),
       merchant: serializer.fromJson<String>(json['merchant']),
       amountMinorUnits: serializer.fromJson<int>(json['amountMinorUnits']),
@@ -730,7 +731,7 @@ class Expense extends DataClass implements Insertable<Expense> {
     };
   }
 
-  Expense copyWith({
+  ExpenseRow copyWith({
     String? id,
     String? merchant,
     int? amountMinorUnits,
@@ -741,7 +742,7 @@ class Expense extends DataClass implements Insertable<Expense> {
     Value<String?> receiptImagePath = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) => Expense(
+  }) => ExpenseRow(
     id: id ?? this.id,
     merchant: merchant ?? this.merchant,
     amountMinorUnits: amountMinorUnits ?? this.amountMinorUnits,
@@ -755,8 +756,8 @@ class Expense extends DataClass implements Insertable<Expense> {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
-  Expense copyWithCompanion(ExpensesCompanion data) {
-    return Expense(
+  ExpenseRow copyWithCompanion(ExpensesCompanion data) {
+    return ExpenseRow(
       id: data.id.present ? data.id.value : this.id,
       merchant: data.merchant.present ? data.merchant.value : this.merchant,
       amountMinorUnits: data.amountMinorUnits.present
@@ -782,7 +783,7 @@ class Expense extends DataClass implements Insertable<Expense> {
 
   @override
   String toString() {
-    return (StringBuffer('Expense(')
+    return (StringBuffer('ExpenseRow(')
           ..write('id: $id, ')
           ..write('merchant: $merchant, ')
           ..write('amountMinorUnits: $amountMinorUnits, ')
@@ -813,7 +814,7 @@ class Expense extends DataClass implements Insertable<Expense> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Expense &&
+      (other is ExpenseRow &&
           other.id == this.id &&
           other.merchant == this.merchant &&
           other.amountMinorUnits == this.amountMinorUnits &&
@@ -826,7 +827,7 @@ class Expense extends DataClass implements Insertable<Expense> {
           other.updatedAt == this.updatedAt);
 }
 
-class ExpensesCompanion extends UpdateCompanion<Expense> {
+class ExpensesCompanion extends UpdateCompanion<ExpenseRow> {
   final Value<String> id;
   final Value<String> merchant;
   final Value<int> amountMinorUnits;
@@ -866,7 +867,7 @@ class ExpensesCompanion extends UpdateCompanion<Expense> {
   }) : merchant = Value(merchant),
        amountMinorUnits = Value(amountMinorUnits),
        occurredAt = Value(occurredAt);
-  static Insertable<Expense> custom({
+  static Insertable<ExpenseRow> custom({
     Expression<String>? id,
     Expression<String>? merchant,
     Expression<int>? amountMinorUnits,
@@ -1023,9 +1024,8 @@ final class $$CategoriesTableReferences
     extends BaseReferences<_$AppDatabase, $CategoriesTable, Category> {
   $$CategoriesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$ExpensesTable, List<Expense>> _expensesRefsTable(
-    _$AppDatabase db,
-  ) => MultiTypedResultKey.fromTable(
+  static MultiTypedResultKey<$ExpensesTable, List<ExpenseRow>>
+  _expensesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.expenses,
     aliasName: 'categories__id__expenses__category_id',
   );
@@ -1265,7 +1265,7 @@ class $$CategoriesTableTableManager
                     await $_getPrefetchedDataByColumns<
                       Category,
                       $CategoriesTable,
-                      Expense,
+                      ExpenseRow,
                       $ExpensesTable
                     >(
                       currentTable: table,
@@ -1331,7 +1331,7 @@ typedef $$ExpensesTableUpdateCompanionBuilder = ExpensesCompanion Function({
 });
 
 final class $$ExpensesTableReferences
-    extends BaseReferences<_$AppDatabase, $ExpensesTable, Expense> {
+    extends BaseReferences<_$AppDatabase, $ExpensesTable, ExpenseRow> {
   $$ExpensesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $CategoriesTable _categoryIdTable(_$AppDatabase db) =>
@@ -1581,14 +1581,14 @@ class $$ExpensesTableTableManager
         RootTableManager<
           _$AppDatabase,
           $ExpensesTable,
-          Expense,
+          ExpenseRow,
           $$ExpensesTableFilterComposer,
           $$ExpensesTableOrderingComposer,
           $$ExpensesTableAnnotationComposer,
           $$ExpensesTableCreateCompanionBuilder,
           $$ExpensesTableUpdateCompanionBuilder,
-          (Expense, $$ExpensesTableReferences),
-          Expense,
+          (ExpenseRow, $$ExpensesTableReferences),
+          ExpenseRow,
           PrefetchHooks Function({bool categoryId})
         > {
   $$ExpensesTableTableManager(_$AppDatabase db, $ExpensesTable table)
@@ -1657,7 +1657,7 @@ class $$ExpensesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$ExpensesTable, Expense>(table),
+                  e.readTable<$ExpensesTable, ExpenseRow>(table),
                   $$ExpensesTableReferences(db, table, e),
                 ),
               )
@@ -1709,14 +1709,14 @@ typedef $$ExpensesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $ExpensesTable,
-      Expense,
+      ExpenseRow,
       $$ExpensesTableFilterComposer,
       $$ExpensesTableOrderingComposer,
       $$ExpensesTableAnnotationComposer,
       $$ExpensesTableCreateCompanionBuilder,
       $$ExpensesTableUpdateCompanionBuilder,
-      (Expense, $$ExpensesTableReferences),
-      Expense,
+      (ExpenseRow, $$ExpensesTableReferences),
+      ExpenseRow,
       PrefetchHooks Function({bool categoryId})
     >;
 
