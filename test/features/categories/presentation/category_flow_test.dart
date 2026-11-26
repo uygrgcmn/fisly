@@ -29,7 +29,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const Key('manage-categories-button')));
+    await tester.tap(find.byKey(const Key('home-management-menu')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('manage-categories-menu-item')));
     await tester.pumpAndSettle();
     expect(find.text('Alışveriş'), findsOneWidget);
     expect(find.text('Varsayılan'), findsWidgets);

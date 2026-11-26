@@ -59,18 +59,37 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
         actions: [
-          _HeaderActionButton(
-            key: const Key('manage-recurring-expenses-button'),
-            tooltip: 'Düzenli ödemeler',
-            icon: Icons.autorenew_rounded,
-            onPressed: () => _showRecurringExpenses(context),
-          ),
-          const SizedBox(width: 8),
-          _HeaderActionButton(
-            key: const Key('manage-categories-button'),
-            tooltip: 'Kategorileri yönet',
-            icon: Icons.grid_view_rounded,
-            onPressed: () => _showCategoryManagement(context),
+          PopupMenuButton<String>(
+            key: const Key('home-management-menu'),
+            tooltip: 'Yönet',
+            icon: const Icon(Icons.more_horiz_rounded),
+            onSelected: (value) {
+              if (value == 'recurring') {
+                _showRecurringExpenses(context);
+              } else {
+                _showCategoryManagement(context);
+              }
+            },
+            itemBuilder: (context) => const [
+              PopupMenuItem(
+                key: Key('manage-recurring-expenses-menu-item'),
+                value: 'recurring',
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.autorenew_rounded),
+                  title: Text('Düzenli ödemeler'),
+                ),
+              ),
+              PopupMenuItem(
+                key: Key('manage-categories-menu-item'),
+                value: 'categories',
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.grid_view_rounded),
+                  title: Text('Kategorileri yönet'),
+                ),
+              ),
+            ],
           ),
           const SizedBox(width: 16),
         ],
@@ -115,6 +134,7 @@ class HomeScreen extends ConsumerWidget {
   void _showRecurringExpenses(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (context) => const RecurringExpensesSheet(),
     );
@@ -380,6 +400,7 @@ class HomeScreen extends ConsumerWidget {
   void _showExpenseForm(BuildContext context, {Expense? expense}) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (context) => ExpenseFormSheet(expense: expense),
     );
@@ -388,6 +409,7 @@ class HomeScreen extends ConsumerWidget {
   void _showCategoryManagement(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (context) => const CategoryManagementSheet(),
     );
@@ -396,6 +418,7 @@ class HomeScreen extends ConsumerWidget {
   void _showMonthlyBudget(BuildContext context, MonthlyBudget? budget) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (context) =>
           MonthlyBudgetSheet(initialLimitMinorUnits: budget?.limitMinorUnits),
@@ -439,38 +462,6 @@ class HomeScreen extends ConsumerWidget {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Harcama silinemedi: $error')));
     }
-  }
-}
-
-class _HeaderActionButton extends StatelessWidget {
-  const _HeaderActionButton({
-    required this.tooltip,
-    required this.icon,
-    required this.onPressed,
-    super.key,
-  });
-
-  final String tooltip;
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.fislyColors;
-
-    return IconButton(
-      tooltip: tooltip,
-      onPressed: onPressed,
-      style: IconButton.styleFrom(
-        backgroundColor: colors.surface,
-        foregroundColor: colors.textPrimary,
-        side: BorderSide(color: colors.border),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      icon: Icon(icon, size: 20),
-    );
   }
 }
 

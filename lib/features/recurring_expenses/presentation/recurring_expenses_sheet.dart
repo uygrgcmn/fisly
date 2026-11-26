@@ -96,6 +96,7 @@ class RecurringExpensesSheet extends ConsumerWidget {
   void _showForm(BuildContext context, {RecurringExpense? expense}) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       builder: (context) => RecurringExpenseFormSheet(expense: expense),
     );

@@ -271,6 +271,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    await tester.ensureVisible(
+      find.byKey(const Key('record-recurring-payment-button')),
+    );
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('record-recurring-payment-button')));
     await tester.pumpAndSettle();
     expect(find.text('"Netflix" ödemesi yapıldı mı?'), findsOneWidget);
@@ -305,7 +309,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const Key('manage-recurring-expenses-button')));
+    await tester.tap(find.byKey(const Key('home-management-menu')));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('manage-recurring-expenses-menu-item')),
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('add-recurring-expense-button')));
     await tester.pumpAndSettle();

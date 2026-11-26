@@ -33,15 +33,18 @@ flutter test
 flutter build apk --release
 ```
 
-For local build-time configuration, copy `.env.example` to `.env` and pass it
-to Flutter:
+To enable optional Supabase email/password accounts, create a Supabase project,
+copy `.env.example` to `.env`, and set the project URL and publishable key from
+the Supabase dashboard. Leave both values empty to keep using Fisly locally
+without an account:
 
 ```powershell
 Copy-Item .env.example .env
 flutter run --dart-define-from-file=.env
 ```
 
-Keep real credentials in `.env`; it is excluded from Git.
+Keep real configuration in `.env`; it is excluded from Git. Never put a
+Supabase `service_role` key in the app.
 
 ## Project structure
 
