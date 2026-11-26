@@ -10,6 +10,7 @@ class Expense {
     this.categoryId,
     this.note,
     this.receiptImagePath,
+    this.recurringExpenseId,
   });
 
   final String id;
@@ -20,6 +21,7 @@ class Expense {
   final String? categoryId;
   final String? note;
   final String? receiptImagePath;
+  final String? recurringExpenseId;
   final DateTime createdAt;
   final DateTime updatedAt;
 }

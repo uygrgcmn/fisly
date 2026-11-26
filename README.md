@@ -9,6 +9,10 @@ understand your spending.
 - Merchant-name category suggestions for common Turkish merchants.
 - Monthly spending total, category breakdown, and six-month trend charts.
 - On-device receipt text recognition with locally stored receipt images.
+- Receipt OCR suggestions for merchant, date, and total can be reviewed before saving.
+- A monthly spending limit with remaining-budget and overspending indicators.
+- Monthly recurring bills and subscriptions can be confirmed as expenses when paid.
+- Monthly reports summarize spending by category and merchant and can be shared as CSV.
 
 ## Getting started
 

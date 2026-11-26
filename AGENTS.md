@@ -10,12 +10,13 @@ A mobile app where the user photographs a receipt, the app extracts merchant, da
 2. Scan receipt via camera or gallery -> OCR -> parse merchant, date, total -> editable confirmation screen
 3. Manual expense add/edit/delete
 4. Categories (defaults + custom), with simple rule-based auto-categorization by merchant keywords
-5. Dashboard: monthly total, category breakdown (pie), trend (bar/line chart)
-6. Offline-first: all data stored locally; background sync with the backend; basic conflict handling (last-write-wins with updated_at)
-7. Export to CSV
+5. Recurring expenses for regular bills and subscriptions (for example phone and streaming services)
+6. Dashboard: monthly total, category breakdown (pie), trend (bar/line chart), and monthly spending limit
+7. Monthly report: spending by category and merchant, recurring vs. one-time expenses, and CSV export
+8. Offline-first: all data stored locally; background sync with the backend; basic conflict handling (last-write-wins with updated_at)
 
 ### Nice-to-have (only after MVP is done)
-- Monthly budgets with notifications
+- Budget notifications
 - Dark mode, TR/EN localization
 - Multi-currency
 
@@ -51,11 +52,11 @@ A mobile app where the user photographs a receipt, the app extracts merchant, da
 ### Roadmap (≈8 weeks)
 - Week 1: Flutter setup, project skeleton, folders, lints, router, theme, GitHub repo + CI
 - Week 2: Drift database (expenses, categories), repositories, manual expense CRUD UI
-- Week 3: Dashboard with charts, category management
+- Week 3: Dashboard with charts, category management, monthly spending limit
 - Week 4: Camera/gallery + ML Kit OCR, raw text extraction
 - Week 5: Receipt parser (merchant/date/total) + confirmation screen + parser unit tests
 - Week 6: Supabase auth + RLS-protected tables + sync layer
-- Week 7: Offline/online edge cases, CSV export, error handling, polish
+- Week 7: Recurring expenses, monthly reports, CSV export, offline/online edge cases, error handling, polish
 - Week 8: Tests coverage, README (screenshots, architecture diagram, setup guide), release APK on GitHub Releases
 
 ### Start now

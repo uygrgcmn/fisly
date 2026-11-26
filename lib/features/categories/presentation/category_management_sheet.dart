@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/fisly_widgets.dart';
 import '../domain/category.dart';
 import 'categories_providers.dart';
 
@@ -10,41 +12,43 @@ class CategoryManagementSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesAsync = ref.watch(categoriesProvider);
+    final colors = context.fislyColors;
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Kategoriler',
-                    style: Theme.of(context).textTheme.headlineSmall,
+            FislySheetHeader(
+              title: 'Kategoriler',
+              icon: Icons.grid_view_rounded,
+              trailing: IconButton.filledTonal(
+                key: const Key('add-category-button'),
+                tooltip: 'Kategori ekle',
+                onPressed: () => _addCategory(context, ref),
+                style: IconButton.styleFrom(
+                  backgroundColor: colors.accentSoft,
+                  foregroundColor: colors.accent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                IconButton(
-                  key: const Key('add-category-button'),
-                  tooltip: 'Kategori ekle',
-                  onPressed: () => _addCategory(context, ref),
-                  icon: const Icon(Icons.add),
-                ),
-              ],
+                icon: const Icon(Icons.add_rounded),
+              ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 14),
             categoriesAsync.when(
               data: (categories) => ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxHeight: MediaQuery.sizeOf(context).height * 0.65,
+                  maxHeight: MediaQuery.sizeOf(context).height * 0.60,
                 ),
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: categories.length,
                   separatorBuilder: (context, index) =>
-                      const Divider(height: 1),
+                      const SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     final category = categories[index];
                     return _CategoryListTile(
@@ -63,7 +67,7 @@ class CategoryManagementSheet extends ConsumerWidget {
               ),
               error: (error, _) => Text(
                 'Kategoriler yüklenemedi: $error',
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
+                style: TextStyle(color: colors.danger),
               ),
             ),
           ],
@@ -178,14 +182,49 @@ class _CategoryListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    final colors = context.fislyColors;
+    final visual = FislyCategoryVisual.fromName(category.name);
+
+    return Container(
       key: ValueKey('category-${category.id}'),
-      title: Text(category.name),
-      subtitle: category.isDefault ? const Text('Varsayılan') : null,
-      trailing: category.isDefault
-          ? null
-          : PopupMenuButton<String>(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: colors.surfaceElevated,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          FislyIconBadge(
+            icon: visual.icon,
+            color: visual.color,
+            size: 40,
+            iconSize: 20,
+            radius: 12,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              category.name,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+              ),
+            ),
+          ),
+          if (category.isDefault)
+            FislyPillBadge(
+              label: 'Varsayılan',
+              foreground: colors.textSecondary,
+              background: colors.surface,
+            )
+          else
+            PopupMenuButton<String>(
               tooltip: 'Kategori işlemleri',
+              icon: Icon(
+                Icons.more_vert_rounded,
+                color: colors.textSecondary,
+                size: 20,
+              ),
               onSelected: (action) {
                 if (action == 'edit') {
                   onEdit();
@@ -198,6 +237,8 @@ class _CategoryListTile extends StatelessWidget {
                 PopupMenuItem(value: 'delete', child: Text('Sil')),
               ],
             ),
+        ],
+      ),
     );
   }
 }
@@ -242,7 +283,6 @@ class _CategoryNameDialogState extends State<_CategoryNameDialog> {
           textCapitalization: TextCapitalization.sentences,
           decoration: const InputDecoration(
             labelText: 'Kategori adı',
-            border: OutlineInputBorder(),
           ),
           validator: (value) => value == null || value.trim().isEmpty
               ? 'Kategori adı boş olamaz.'

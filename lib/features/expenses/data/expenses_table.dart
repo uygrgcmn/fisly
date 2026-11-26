@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../categories/data/categories_table.dart';
+import '../../recurring_expenses/data/recurring_expenses_table.dart';
 
 @DataClassName('ExpenseRow')
 class Expenses extends Table {
@@ -24,6 +25,12 @@ class Expenses extends Table {
   TextColumn get note => text().nullable()();
 
   TextColumn get receiptImagePath => text().nullable()();
+
+  TextColumn get recurringExpenseId => text().nullable().references(
+    RecurringExpenses,
+    #id,
+    onDelete: KeyAction.setNull,
+  )();
 
   DateTimeColumn get createdAt =>
       dateTime().clientDefault(() => DateTime.now())();

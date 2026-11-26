@@ -3,9 +3,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:fisly/app.dart';
 import 'package:fisly/core/database/app_database.dart';
 import 'package:fisly/core/database/database_provider.dart';
+import 'package:fisly/features/budgets/presentation/monthly_budget_card.dart';
 import 'package:fisly/features/expenses/data/receipt_ocr_service.dart';
 import 'package:fisly/features/expenses/domain/receipt_scan_result.dart';
 import 'package:fisly/features/expenses/presentation/expenses_providers.dart';
+import 'package:fisly/features/recurring_expenses/data/recurring_expenses_repository.dart';
 import 'package:flutter/foundation.dart' show Key;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -104,7 +106,9 @@ void main() {
     expect(find.text('Mağaza adına göre otomatik seçildi.'), findsOneWidget);
     expect(find.text('Market'), findsOneWidget);
 
-    await tester.tap(find.byKey(const Key('save-expense-button')));
+    final saveButton = find.byKey(const Key('save-expense-button'));
+    await tester.ensureVisible(saveButton);
+    await tester.tap(saveButton);
     await tester.pumpAndSettle();
 
     expect(
@@ -133,7 +137,8 @@ void main() {
     final receiptOcrService = _FakeReceiptOcrService(
       const ReceiptScanResult(
         imagePath: '/cache/receipt.jpg',
-        rawText: 'MIGROS\nTOPLAM 45,00 TL',
+        rawText:
+            'MİGROS TİCARET A.Ş.\nTARİH: 25.11.2026\nGENEL TOPLAM: 45,00 TL',
       ),
     );
     await tester.pumpWidget(
@@ -162,27 +167,169 @@ void main() {
           )
           .controller!
           .text,
-      'MIGROS\nTOPLAM 45,00 TL',
+      'MİGROS TİCARET A.Ş.\nTARİH: 25.11.2026\nGENEL TOPLAM: 45,00 TL',
     );
     expect(
       tester
           .widget<TextFormField>(find.byKey(const Key('merchant-field')))
           .controller!
           .text,
-      isEmpty,
+      'MİGROS TİCARET A.Ş.',
     );
+    expect(
+      tester
+          .widget<TextFormField>(find.byKey(const Key('amount-field')))
+          .controller!
+          .text,
+      '45,00',
+    );
+    expect(find.text('Tarih: 25.11.2026'), findsOneWidget);
     expect(receiptOcrService.persistedImagePath, isNull);
 
-    await tester.enterText(find.byKey(const Key('merchant-field')), 'Migros');
-    await tester.enterText(find.byKey(const Key('amount-field')), '45,00');
+    await tester.enterText(
+      find.byKey(const Key('merchant-field')),
+      'Migros Market',
+    );
+    await tester.enterText(find.byKey(const Key('amount-field')), '50,25');
     await tester.ensureVisible(find.byKey(const Key('save-expense-button')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('save-expense-button')));
     await tester.pumpAndSettle();
 
     final rows = await database.select(database.expenses).get();
+    expect(rows.single.merchant, 'Migros Market');
+    expect(rows.single.amountMinorUnits, 5025);
+    expect(rows.single.occurredAt, DateTime(2026, 11, 25));
     expect(rows.single.receiptImagePath, '/app-support/receipt.jpg');
     expect(receiptOcrService.persistedImagePath, '/cache/receipt.jpg');
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(const Duration(seconds: 1));
+  });
+
+  testWidgets('shows monthly budget progress after adding an expense', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [appDatabaseProvider.overrideWithValue(database)],
+        child: const FislyApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('manage-monthly-budget-button')));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const Key('monthly-budget-amount-field')),
+      '50,00',
+    );
+    await tester.tap(find.byKey(const Key('save-monthly-budget-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('₺50,00'), findsOneWidget);
+    expect(find.text('Kalan: ₺50,00'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('add-expense-button')));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const Key('merchant-field')),
+      'Monthly subscription',
+    );
+    await tester.enterText(find.byKey(const Key('amount-field')), '75,00');
+    await tester.ensureVisible(find.byKey(const Key('save-expense-button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('save-expense-button')));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<Text>(find.byKey(const Key('dashboard-monthly-total')))
+          .data,
+      '₺75,00',
+    );
+    expect(find.text('Limit ₺25,00 aşıldı.'), findsOneWidget);
+    expect(find.byType(MonthlyBudgetCard), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(const Duration(seconds: 1));
+  });
+
+  testWidgets('confirms a recurring payment and updates dashboard totals', (
+    tester,
+  ) async {
+    final recurringRepository = RecurringExpensesRepository(database);
+    await recurringRepository.addRecurringExpense(
+      merchant: 'Netflix',
+      amountMinorUnits: 1299,
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [appDatabaseProvider.overrideWithValue(database)],
+        child: const FislyApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('record-recurring-payment-button')));
+    await tester.pumpAndSettle();
+    expect(find.text('"Netflix" ödemesi yapıldı mı?'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('confirm-recurring-payment-button')));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<Text>(find.byKey(const Key('dashboard-monthly-total')))
+          .data,
+      '₺12,99',
+    );
+    await tester.scrollUntilVisible(
+      find.text('Bu ay ödendi'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Bu ay ödendi'), findsOneWidget);
+    expect(find.text('Netflix'), findsWidgets);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(const Duration(seconds: 1));
+  });
+
+  testWidgets('adds a recurring monthly payment template', (tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [appDatabaseProvider.overrideWithValue(database)],
+        child: const FislyApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('manage-recurring-expenses-button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('add-recurring-expense-button')));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const Key('recurring-merchant-field')),
+      'Telefon faturası',
+    );
+    await tester.enterText(
+      find.byKey(const Key('recurring-amount-field')),
+      '450,00',
+    );
+    await tester.ensureVisible(
+      find.byKey(const Key('save-recurring-expense-button')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('save-recurring-expense-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Telefon faturası'), findsWidgets);
+    final templates = await database.select(database.recurringExpenses).get();
+    expect(templates, hasLength(1));
+    expect(templates.single.amountMinorUnits, 45000);
+    expect(templates.single.isActive, isTrue);
+    expect(await database.select(database.expenses).get(), isEmpty);
 
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pump(const Duration(seconds: 1));

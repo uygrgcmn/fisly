@@ -25,6 +25,7 @@ class ExpensesRepository {
     String? categoryId,
     String? note,
     String? receiptImagePath,
+    String? recurringExpenseId,
   }) async {
     await _database
         .into(_database.expenses)
@@ -37,6 +38,7 @@ class ExpensesRepository {
             categoryId: Value(categoryId),
             note: Value(note),
             receiptImagePath: Value(receiptImagePath),
+            recurringExpenseId: Value(recurringExpenseId),
           ),
         );
   }
@@ -54,6 +56,7 @@ class ExpensesRepository {
             categoryId: Value(expense.categoryId),
             note: Value(expense.note),
             receiptImagePath: Value(expense.receiptImagePath),
+            recurringExpenseId: Value(expense.recurringExpenseId),
             updatedAt: Value(DateTime.now()),
           ),
         );
@@ -79,6 +82,7 @@ class ExpensesRepository {
       categoryId: row.categoryId,
       note: row.note,
       receiptImagePath: row.receiptImagePath,
+      recurringExpenseId: row.recurringExpenseId,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
     );
