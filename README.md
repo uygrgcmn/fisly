@@ -46,6 +46,19 @@ flutter run --dart-define-from-file=.env
 Keep real configuration in `.env`; it is excluded from Git. Never put a
 Supabase `service_role` key in the app.
 
+The initial user-owned database schema and row-level security policies are in
+`supabase/migrations/`. Applying the migration creates empty cloud tables; it
+does not upload existing local data. RLS tests are in `supabase/tests/` and can
+be run with the Supabase CLI and a local Docker database.
+
+New local create, update, and delete operations are recorded in a Drift sync
+queue with per-account acknowledgements. Existing rows are not queued
+automatically. The signed-in account screen stores a per-user import decision
+and can manually synchronize categories after consent. Same-name categories
+share a cloud ID without changing local expense references. Only categories are
+synchronized at this stage; expenses, budgets, and recurring expenses remain
+local.
+
 ## Project structure
 
 - `lib/core/` contains app-wide routing, theme, and database setup.

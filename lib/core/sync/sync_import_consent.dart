@@ -1,0 +1,1 @@
+enum SyncImportConsentDecision { allowed, declined }

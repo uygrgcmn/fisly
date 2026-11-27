@@ -1868,6 +1868,1176 @@ class MonthlyBudgetsCompanion extends UpdateCompanion<MonthlyBudgetRow> {
   }
 }
 
+class $SyncCategoryMappingsTable extends SyncCategoryMappings
+    with TableInfo<$SyncCategoryMappingsTable, SyncCategoryMappingRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncCategoryMappingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _localCategoryIdMeta = const VerificationMeta(
+    'localCategoryId',
+  );
+  @override
+  late final GeneratedColumn<String> localCategoryId = GeneratedColumn<String>(
+    'local_category_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _remoteCategoryIdMeta = const VerificationMeta(
+    'remoteCategoryId',
+  );
+  @override
+  late final GeneratedColumn<String> remoteCategoryId = GeneratedColumn<String>(
+    'remote_category_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    userId,
+    localCategoryId,
+    remoteCategoryId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_category_mappings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncCategoryMappingRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('local_category_id')) {
+      context.handle(
+        _localCategoryIdMeta,
+        localCategoryId.isAcceptableOrUnknown(
+          data['local_category_id']!,
+          _localCategoryIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_localCategoryIdMeta);
+    }
+    if (data.containsKey('remote_category_id')) {
+      context.handle(
+        _remoteCategoryIdMeta,
+        remoteCategoryId.isAcceptableOrUnknown(
+          data['remote_category_id']!,
+          _remoteCategoryIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_remoteCategoryIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, localCategoryId};
+  @override
+  SyncCategoryMappingRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncCategoryMappingRow(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      localCategoryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_category_id'],
+      )!,
+      remoteCategoryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}remote_category_id'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncCategoryMappingsTable createAlias(String alias) {
+    return $SyncCategoryMappingsTable(attachedDatabase, alias);
+  }
+}
+
+class SyncCategoryMappingRow extends DataClass
+    implements Insertable<SyncCategoryMappingRow> {
+  final String userId;
+  final String localCategoryId;
+  final String remoteCategoryId;
+  const SyncCategoryMappingRow({
+    required this.userId,
+    required this.localCategoryId,
+    required this.remoteCategoryId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['local_category_id'] = Variable<String>(localCategoryId);
+    map['remote_category_id'] = Variable<String>(remoteCategoryId);
+    return map;
+  }
+
+  SyncCategoryMappingsCompanion toCompanion(bool nullToAbsent) {
+    return SyncCategoryMappingsCompanion(
+      userId: Value(userId),
+      localCategoryId: Value(localCategoryId),
+      remoteCategoryId: Value(remoteCategoryId),
+    );
+  }
+
+  factory SyncCategoryMappingRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncCategoryMappingRow(
+      userId: serializer.fromJson<String>(json['userId']),
+      localCategoryId: serializer.fromJson<String>(json['localCategoryId']),
+      remoteCategoryId: serializer.fromJson<String>(json['remoteCategoryId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'localCategoryId': serializer.toJson<String>(localCategoryId),
+      'remoteCategoryId': serializer.toJson<String>(remoteCategoryId),
+    };
+  }
+
+  SyncCategoryMappingRow copyWith({
+    String? userId,
+    String? localCategoryId,
+    String? remoteCategoryId,
+  }) => SyncCategoryMappingRow(
+    userId: userId ?? this.userId,
+    localCategoryId: localCategoryId ?? this.localCategoryId,
+    remoteCategoryId: remoteCategoryId ?? this.remoteCategoryId,
+  );
+  SyncCategoryMappingRow copyWithCompanion(SyncCategoryMappingsCompanion data) {
+    return SyncCategoryMappingRow(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      localCategoryId: data.localCategoryId.present
+          ? data.localCategoryId.value
+          : this.localCategoryId,
+      remoteCategoryId: data.remoteCategoryId.present
+          ? data.remoteCategoryId.value
+          : this.remoteCategoryId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncCategoryMappingRow(')
+          ..write('userId: $userId, ')
+          ..write('localCategoryId: $localCategoryId, ')
+          ..write('remoteCategoryId: $remoteCategoryId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(userId, localCategoryId, remoteCategoryId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncCategoryMappingRow &&
+          other.userId == this.userId &&
+          other.localCategoryId == this.localCategoryId &&
+          other.remoteCategoryId == this.remoteCategoryId);
+}
+
+class SyncCategoryMappingsCompanion
+    extends UpdateCompanion<SyncCategoryMappingRow> {
+  final Value<String> userId;
+  final Value<String> localCategoryId;
+  final Value<String> remoteCategoryId;
+  final Value<int> rowid;
+  const SyncCategoryMappingsCompanion({
+    this.userId = const Value.absent(),
+    this.localCategoryId = const Value.absent(),
+    this.remoteCategoryId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncCategoryMappingsCompanion.insert({
+    required String userId,
+    required String localCategoryId,
+    required String remoteCategoryId,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       localCategoryId = Value(localCategoryId),
+       remoteCategoryId = Value(remoteCategoryId);
+  static Insertable<SyncCategoryMappingRow> custom({
+    Expression<String>? userId,
+    Expression<String>? localCategoryId,
+    Expression<String>? remoteCategoryId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (localCategoryId != null) 'local_category_id': localCategoryId,
+      if (remoteCategoryId != null) 'remote_category_id': remoteCategoryId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncCategoryMappingsCompanion copyWith({
+    Value<String>? userId,
+    Value<String>? localCategoryId,
+    Value<String>? remoteCategoryId,
+    Value<int>? rowid,
+  }) {
+    return SyncCategoryMappingsCompanion(
+      userId: userId ?? this.userId,
+      localCategoryId: localCategoryId ?? this.localCategoryId,
+      remoteCategoryId: remoteCategoryId ?? this.remoteCategoryId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (localCategoryId.present) {
+      map['local_category_id'] = Variable<String>(localCategoryId.value);
+    }
+    if (remoteCategoryId.present) {
+      map['remote_category_id'] = Variable<String>(remoteCategoryId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncCategoryMappingsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('localCategoryId: $localCategoryId, ')
+          ..write('remoteCategoryId: $remoteCategoryId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SyncImportConsentsTable extends SyncImportConsents
+    with TableInfo<$SyncImportConsentsTable, SyncImportConsentRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncImportConsentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _decisionMeta = const VerificationMeta(
+    'decision',
+  );
+  @override
+  late final GeneratedColumn<String> decision = GeneratedColumn<String>(
+    'decision',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _decidedAtEpochMillisMeta =
+      const VerificationMeta('decidedAtEpochMillis');
+  @override
+  late final GeneratedColumn<int> decidedAtEpochMillis = GeneratedColumn<int>(
+    'decided_at_epoch_millis',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    userId,
+    decision,
+    decidedAtEpochMillis,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_import_consents';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncImportConsentRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('decision')) {
+      context.handle(
+        _decisionMeta,
+        decision.isAcceptableOrUnknown(data['decision']!, _decisionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_decisionMeta);
+    }
+    if (data.containsKey('decided_at_epoch_millis')) {
+      context.handle(
+        _decidedAtEpochMillisMeta,
+        decidedAtEpochMillis.isAcceptableOrUnknown(
+          data['decided_at_epoch_millis']!,
+          _decidedAtEpochMillisMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_decidedAtEpochMillisMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId};
+  @override
+  SyncImportConsentRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncImportConsentRow(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      decision: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}decision'],
+      )!,
+      decidedAtEpochMillis: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}decided_at_epoch_millis'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncImportConsentsTable createAlias(String alias) {
+    return $SyncImportConsentsTable(attachedDatabase, alias);
+  }
+}
+
+class SyncImportConsentRow extends DataClass
+    implements Insertable<SyncImportConsentRow> {
+  final String userId;
+  final String decision;
+  final int decidedAtEpochMillis;
+  const SyncImportConsentRow({
+    required this.userId,
+    required this.decision,
+    required this.decidedAtEpochMillis,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['decision'] = Variable<String>(decision);
+    map['decided_at_epoch_millis'] = Variable<int>(decidedAtEpochMillis);
+    return map;
+  }
+
+  SyncImportConsentsCompanion toCompanion(bool nullToAbsent) {
+    return SyncImportConsentsCompanion(
+      userId: Value(userId),
+      decision: Value(decision),
+      decidedAtEpochMillis: Value(decidedAtEpochMillis),
+    );
+  }
+
+  factory SyncImportConsentRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncImportConsentRow(
+      userId: serializer.fromJson<String>(json['userId']),
+      decision: serializer.fromJson<String>(json['decision']),
+      decidedAtEpochMillis: serializer.fromJson<int>(
+        json['decidedAtEpochMillis'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'decision': serializer.toJson<String>(decision),
+      'decidedAtEpochMillis': serializer.toJson<int>(decidedAtEpochMillis),
+    };
+  }
+
+  SyncImportConsentRow copyWith({
+    String? userId,
+    String? decision,
+    int? decidedAtEpochMillis,
+  }) => SyncImportConsentRow(
+    userId: userId ?? this.userId,
+    decision: decision ?? this.decision,
+    decidedAtEpochMillis: decidedAtEpochMillis ?? this.decidedAtEpochMillis,
+  );
+  SyncImportConsentRow copyWithCompanion(SyncImportConsentsCompanion data) {
+    return SyncImportConsentRow(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      decision: data.decision.present ? data.decision.value : this.decision,
+      decidedAtEpochMillis: data.decidedAtEpochMillis.present
+          ? data.decidedAtEpochMillis.value
+          : this.decidedAtEpochMillis,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncImportConsentRow(')
+          ..write('userId: $userId, ')
+          ..write('decision: $decision, ')
+          ..write('decidedAtEpochMillis: $decidedAtEpochMillis')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(userId, decision, decidedAtEpochMillis);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncImportConsentRow &&
+          other.userId == this.userId &&
+          other.decision == this.decision &&
+          other.decidedAtEpochMillis == this.decidedAtEpochMillis);
+}
+
+class SyncImportConsentsCompanion
+    extends UpdateCompanion<SyncImportConsentRow> {
+  final Value<String> userId;
+  final Value<String> decision;
+  final Value<int> decidedAtEpochMillis;
+  final Value<int> rowid;
+  const SyncImportConsentsCompanion({
+    this.userId = const Value.absent(),
+    this.decision = const Value.absent(),
+    this.decidedAtEpochMillis = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncImportConsentsCompanion.insert({
+    required String userId,
+    required String decision,
+    required int decidedAtEpochMillis,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       decision = Value(decision),
+       decidedAtEpochMillis = Value(decidedAtEpochMillis);
+  static Insertable<SyncImportConsentRow> custom({
+    Expression<String>? userId,
+    Expression<String>? decision,
+    Expression<int>? decidedAtEpochMillis,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (decision != null) 'decision': decision,
+      if (decidedAtEpochMillis != null)
+        'decided_at_epoch_millis': decidedAtEpochMillis,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncImportConsentsCompanion copyWith({
+    Value<String>? userId,
+    Value<String>? decision,
+    Value<int>? decidedAtEpochMillis,
+    Value<int>? rowid,
+  }) {
+    return SyncImportConsentsCompanion(
+      userId: userId ?? this.userId,
+      decision: decision ?? this.decision,
+      decidedAtEpochMillis: decidedAtEpochMillis ?? this.decidedAtEpochMillis,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (decision.present) {
+      map['decision'] = Variable<String>(decision.value);
+    }
+    if (decidedAtEpochMillis.present) {
+      map['decided_at_epoch_millis'] = Variable<int>(
+        decidedAtEpochMillis.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncImportConsentsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('decision: $decision, ')
+          ..write('decidedAtEpochMillis: $decidedAtEpochMillis, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SyncOperationsTable extends SyncOperations
+    with TableInfo<$SyncOperationsTable, SyncOperationRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncOperationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _entityTypeMeta = const VerificationMeta(
+    'entityType',
+  );
+  @override
+  late final GeneratedColumn<String> entityType = GeneratedColumn<String>(
+    'entity_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _entityIdMeta = const VerificationMeta(
+    'entityId',
+  );
+  @override
+  late final GeneratedColumn<String> entityId = GeneratedColumn<String>(
+    'entity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _operationMeta = const VerificationMeta(
+    'operation',
+  );
+  @override
+  late final GeneratedColumn<String> operation = GeneratedColumn<String>(
+    'operation',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _changedAtEpochMillisMeta =
+      const VerificationMeta('changedAtEpochMillis');
+  @override
+  late final GeneratedColumn<int> changedAtEpochMillis = GeneratedColumn<int>(
+    'changed_at_epoch_millis',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    entityType,
+    entityId,
+    operation,
+    changedAtEpochMillis,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_operations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncOperationRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('entity_type')) {
+      context.handle(
+        _entityTypeMeta,
+        entityType.isAcceptableOrUnknown(data['entity_type']!, _entityTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entityTypeMeta);
+    }
+    if (data.containsKey('entity_id')) {
+      context.handle(
+        _entityIdMeta,
+        entityId.isAcceptableOrUnknown(data['entity_id']!, _entityIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_entityIdMeta);
+    }
+    if (data.containsKey('operation')) {
+      context.handle(
+        _operationMeta,
+        operation.isAcceptableOrUnknown(data['operation']!, _operationMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_operationMeta);
+    }
+    if (data.containsKey('changed_at_epoch_millis')) {
+      context.handle(
+        _changedAtEpochMillisMeta,
+        changedAtEpochMillis.isAcceptableOrUnknown(
+          data['changed_at_epoch_millis']!,
+          _changedAtEpochMillisMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_changedAtEpochMillisMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SyncOperationRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncOperationRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      entityType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entity_type'],
+      )!,
+      entityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entity_id'],
+      )!,
+      operation: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}operation'],
+      )!,
+      changedAtEpochMillis: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}changed_at_epoch_millis'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncOperationsTable createAlias(String alias) {
+    return $SyncOperationsTable(attachedDatabase, alias);
+  }
+}
+
+class SyncOperationRow extends DataClass
+    implements Insertable<SyncOperationRow> {
+  final int id;
+  final String entityType;
+  final String entityId;
+  final String operation;
+  final int changedAtEpochMillis;
+  const SyncOperationRow({
+    required this.id,
+    required this.entityType,
+    required this.entityId,
+    required this.operation,
+    required this.changedAtEpochMillis,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['entity_type'] = Variable<String>(entityType);
+    map['entity_id'] = Variable<String>(entityId);
+    map['operation'] = Variable<String>(operation);
+    map['changed_at_epoch_millis'] = Variable<int>(changedAtEpochMillis);
+    return map;
+  }
+
+  SyncOperationsCompanion toCompanion(bool nullToAbsent) {
+    return SyncOperationsCompanion(
+      id: Value(id),
+      entityType: Value(entityType),
+      entityId: Value(entityId),
+      operation: Value(operation),
+      changedAtEpochMillis: Value(changedAtEpochMillis),
+    );
+  }
+
+  factory SyncOperationRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncOperationRow(
+      id: serializer.fromJson<int>(json['id']),
+      entityType: serializer.fromJson<String>(json['entityType']),
+      entityId: serializer.fromJson<String>(json['entityId']),
+      operation: serializer.fromJson<String>(json['operation']),
+      changedAtEpochMillis: serializer.fromJson<int>(
+        json['changedAtEpochMillis'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'entityType': serializer.toJson<String>(entityType),
+      'entityId': serializer.toJson<String>(entityId),
+      'operation': serializer.toJson<String>(operation),
+      'changedAtEpochMillis': serializer.toJson<int>(changedAtEpochMillis),
+    };
+  }
+
+  SyncOperationRow copyWith({
+    int? id,
+    String? entityType,
+    String? entityId,
+    String? operation,
+    int? changedAtEpochMillis,
+  }) => SyncOperationRow(
+    id: id ?? this.id,
+    entityType: entityType ?? this.entityType,
+    entityId: entityId ?? this.entityId,
+    operation: operation ?? this.operation,
+    changedAtEpochMillis: changedAtEpochMillis ?? this.changedAtEpochMillis,
+  );
+  SyncOperationRow copyWithCompanion(SyncOperationsCompanion data) {
+    return SyncOperationRow(
+      id: data.id.present ? data.id.value : this.id,
+      entityType: data.entityType.present
+          ? data.entityType.value
+          : this.entityType,
+      entityId: data.entityId.present ? data.entityId.value : this.entityId,
+      operation: data.operation.present ? data.operation.value : this.operation,
+      changedAtEpochMillis: data.changedAtEpochMillis.present
+          ? data.changedAtEpochMillis.value
+          : this.changedAtEpochMillis,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncOperationRow(')
+          ..write('id: $id, ')
+          ..write('entityType: $entityType, ')
+          ..write('entityId: $entityId, ')
+          ..write('operation: $operation, ')
+          ..write('changedAtEpochMillis: $changedAtEpochMillis')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, entityType, entityId, operation, changedAtEpochMillis);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncOperationRow &&
+          other.id == this.id &&
+          other.entityType == this.entityType &&
+          other.entityId == this.entityId &&
+          other.operation == this.operation &&
+          other.changedAtEpochMillis == this.changedAtEpochMillis);
+}
+
+class SyncOperationsCompanion extends UpdateCompanion<SyncOperationRow> {
+  final Value<int> id;
+  final Value<String> entityType;
+  final Value<String> entityId;
+  final Value<String> operation;
+  final Value<int> changedAtEpochMillis;
+  const SyncOperationsCompanion({
+    this.id = const Value.absent(),
+    this.entityType = const Value.absent(),
+    this.entityId = const Value.absent(),
+    this.operation = const Value.absent(),
+    this.changedAtEpochMillis = const Value.absent(),
+  });
+  SyncOperationsCompanion.insert({
+    this.id = const Value.absent(),
+    required String entityType,
+    required String entityId,
+    required String operation,
+    required int changedAtEpochMillis,
+  }) : entityType = Value(entityType),
+       entityId = Value(entityId),
+       operation = Value(operation),
+       changedAtEpochMillis = Value(changedAtEpochMillis);
+  static Insertable<SyncOperationRow> custom({
+    Expression<int>? id,
+    Expression<String>? entityType,
+    Expression<String>? entityId,
+    Expression<String>? operation,
+    Expression<int>? changedAtEpochMillis,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (entityType != null) 'entity_type': entityType,
+      if (entityId != null) 'entity_id': entityId,
+      if (operation != null) 'operation': operation,
+      if (changedAtEpochMillis != null)
+        'changed_at_epoch_millis': changedAtEpochMillis,
+    });
+  }
+
+  SyncOperationsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? entityType,
+    Value<String>? entityId,
+    Value<String>? operation,
+    Value<int>? changedAtEpochMillis,
+  }) {
+    return SyncOperationsCompanion(
+      id: id ?? this.id,
+      entityType: entityType ?? this.entityType,
+      entityId: entityId ?? this.entityId,
+      operation: operation ?? this.operation,
+      changedAtEpochMillis: changedAtEpochMillis ?? this.changedAtEpochMillis,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (entityType.present) {
+      map['entity_type'] = Variable<String>(entityType.value);
+    }
+    if (entityId.present) {
+      map['entity_id'] = Variable<String>(entityId.value);
+    }
+    if (operation.present) {
+      map['operation'] = Variable<String>(operation.value);
+    }
+    if (changedAtEpochMillis.present) {
+      map['changed_at_epoch_millis'] = Variable<int>(
+        changedAtEpochMillis.value,
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncOperationsCompanion(')
+          ..write('id: $id, ')
+          ..write('entityType: $entityType, ')
+          ..write('entityId: $entityId, ')
+          ..write('operation: $operation, ')
+          ..write('changedAtEpochMillis: $changedAtEpochMillis')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SyncOperationAcknowledgementsTable extends SyncOperationAcknowledgements
+    with
+        TableInfo<
+          $SyncOperationAcknowledgementsTable,
+          SyncOperationAcknowledgementRow
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncOperationAcknowledgementsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _operationIdMeta = const VerificationMeta(
+    'operationId',
+  );
+  @override
+  late final GeneratedColumn<int> operationId = GeneratedColumn<int>(
+    'operation_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES sync_operations (id) ON DELETE CASCADE',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [userId, operationId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_operation_acknowledgements';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SyncOperationAcknowledgementRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('operation_id')) {
+      context.handle(
+        _operationIdMeta,
+        operationId.isAcceptableOrUnknown(
+          data['operation_id']!,
+          _operationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_operationIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {userId, operationId};
+  @override
+  SyncOperationAcknowledgementRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncOperationAcknowledgementRow(
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      operationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}operation_id'],
+      )!,
+    );
+  }
+
+  @override
+  $SyncOperationAcknowledgementsTable createAlias(String alias) {
+    return $SyncOperationAcknowledgementsTable(attachedDatabase, alias);
+  }
+}
+
+class SyncOperationAcknowledgementRow extends DataClass
+    implements Insertable<SyncOperationAcknowledgementRow> {
+  final String userId;
+  final int operationId;
+  const SyncOperationAcknowledgementRow({
+    required this.userId,
+    required this.operationId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['operation_id'] = Variable<int>(operationId);
+    return map;
+  }
+
+  SyncOperationAcknowledgementsCompanion toCompanion(bool nullToAbsent) {
+    return SyncOperationAcknowledgementsCompanion(
+      userId: Value(userId),
+      operationId: Value(operationId),
+    );
+  }
+
+  factory SyncOperationAcknowledgementRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SyncOperationAcknowledgementRow(
+      userId: serializer.fromJson<String>(json['userId']),
+      operationId: serializer.fromJson<int>(json['operationId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'operationId': serializer.toJson<int>(operationId),
+    };
+  }
+
+  SyncOperationAcknowledgementRow copyWith({
+    String? userId,
+    int? operationId,
+  }) => SyncOperationAcknowledgementRow(
+    userId: userId ?? this.userId,
+    operationId: operationId ?? this.operationId,
+  );
+  SyncOperationAcknowledgementRow copyWithCompanion(
+    SyncOperationAcknowledgementsCompanion data,
+  ) {
+    return SyncOperationAcknowledgementRow(
+      userId: data.userId.present ? data.userId.value : this.userId,
+      operationId: data.operationId.present
+          ? data.operationId.value
+          : this.operationId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncOperationAcknowledgementRow(')
+          ..write('userId: $userId, ')
+          ..write('operationId: $operationId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(userId, operationId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncOperationAcknowledgementRow &&
+          other.userId == this.userId &&
+          other.operationId == this.operationId);
+}
+
+class SyncOperationAcknowledgementsCompanion
+    extends UpdateCompanion<SyncOperationAcknowledgementRow> {
+  final Value<String> userId;
+  final Value<int> operationId;
+  final Value<int> rowid;
+  const SyncOperationAcknowledgementsCompanion({
+    this.userId = const Value.absent(),
+    this.operationId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SyncOperationAcknowledgementsCompanion.insert({
+    required String userId,
+    required int operationId,
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId),
+       operationId = Value(operationId);
+  static Insertable<SyncOperationAcknowledgementRow> custom({
+    Expression<String>? userId,
+    Expression<int>? operationId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (operationId != null) 'operation_id': operationId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncOperationAcknowledgementsCompanion copyWith({
+    Value<String>? userId,
+    Value<int>? operationId,
+    Value<int>? rowid,
+  }) {
+    return SyncOperationAcknowledgementsCompanion(
+      userId: userId ?? this.userId,
+      operationId: operationId ?? this.operationId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (operationId.present) {
+      map['operation_id'] = Variable<int>(operationId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncOperationAcknowledgementsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('operationId: $operationId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1876,6 +3046,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $RecurringExpensesTable(this);
   late final $ExpensesTable expenses = $ExpensesTable(this);
   late final $MonthlyBudgetsTable monthlyBudgets = $MonthlyBudgetsTable(this);
+  late final $SyncCategoryMappingsTable syncCategoryMappings =
+      $SyncCategoryMappingsTable(this);
+  late final $SyncImportConsentsTable syncImportConsents =
+      $SyncImportConsentsTable(this);
+  late final $SyncOperationsTable syncOperations = $SyncOperationsTable(this);
+  late final $SyncOperationAcknowledgementsTable syncOperationAcknowledgements =
+      $SyncOperationAcknowledgementsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1885,6 +3062,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     recurringExpenses,
     expenses,
     monthlyBudgets,
+    syncCategoryMappings,
+    syncImportConsents,
+    syncOperations,
+    syncOperationAcknowledgements,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -1908,6 +3089,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('expenses', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'sync_operations',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('sync_operation_acknowledgements', kind: UpdateKind.delete),
+      ],
     ),
   ]);
 }
@@ -3506,6 +4696,1006 @@ typedef $$MonthlyBudgetsTableProcessedTableManager =
       MonthlyBudgetRow,
       PrefetchHooks Function()
     >;
+typedef $$SyncCategoryMappingsTableCreateCompanionBuilder =
+    SyncCategoryMappingsCompanion Function({
+      required String userId,
+      required String localCategoryId,
+      required String remoteCategoryId,
+      Value<int> rowid,
+    });
+typedef $$SyncCategoryMappingsTableUpdateCompanionBuilder =
+    SyncCategoryMappingsCompanion Function({
+      Value<String> userId,
+      Value<String> localCategoryId,
+      Value<String> remoteCategoryId,
+      Value<int> rowid,
+    });
+
+class $$SyncCategoryMappingsTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncCategoryMappingsTable> {
+  $$SyncCategoryMappingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get localCategoryId => $composableBuilder(
+    column: $table.localCategoryId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get remoteCategoryId => $composableBuilder(
+    column: $table.remoteCategoryId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SyncCategoryMappingsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncCategoryMappingsTable> {
+  $$SyncCategoryMappingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get localCategoryId => $composableBuilder(
+    column: $table.localCategoryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get remoteCategoryId => $composableBuilder(
+    column: $table.remoteCategoryId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncCategoryMappingsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncCategoryMappingsTable> {
+  $$SyncCategoryMappingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get localCategoryId => $composableBuilder(
+    column: $table.localCategoryId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get remoteCategoryId => $composableBuilder(
+    column: $table.remoteCategoryId,
+    builder: (column) => column,
+  );
+}
+
+class $$SyncCategoryMappingsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncCategoryMappingsTable,
+          SyncCategoryMappingRow,
+          $$SyncCategoryMappingsTableFilterComposer,
+          $$SyncCategoryMappingsTableOrderingComposer,
+          $$SyncCategoryMappingsTableAnnotationComposer,
+          $$SyncCategoryMappingsTableCreateCompanionBuilder,
+          $$SyncCategoryMappingsTableUpdateCompanionBuilder,
+          (
+            SyncCategoryMappingRow,
+            BaseReferences<
+              _$AppDatabase,
+              $SyncCategoryMappingsTable,
+              SyncCategoryMappingRow
+            >,
+          ),
+          SyncCategoryMappingRow,
+          PrefetchHooks Function()
+        > {
+  $$SyncCategoryMappingsTableTableManager(
+    _$AppDatabase db,
+    $SyncCategoryMappingsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncCategoryMappingsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncCategoryMappingsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SyncCategoryMappingsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<String> localCategoryId = const Value.absent(),
+                Value<String> remoteCategoryId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncCategoryMappingsCompanion(
+                userId: userId,
+                localCategoryId: localCategoryId,
+                remoteCategoryId: remoteCategoryId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required String localCategoryId,
+                required String remoteCategoryId,
+                Value<int> rowid = const Value.absent(),
+              }) => SyncCategoryMappingsCompanion.insert(
+                userId: userId,
+                localCategoryId: localCategoryId,
+                remoteCategoryId: remoteCategoryId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<
+                    $SyncCategoryMappingsTable,
+                    SyncCategoryMappingRow
+                  >(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $SyncCategoryMappingsTable,
+                    SyncCategoryMappingRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SyncCategoryMappingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncCategoryMappingsTable,
+      SyncCategoryMappingRow,
+      $$SyncCategoryMappingsTableFilterComposer,
+      $$SyncCategoryMappingsTableOrderingComposer,
+      $$SyncCategoryMappingsTableAnnotationComposer,
+      $$SyncCategoryMappingsTableCreateCompanionBuilder,
+      $$SyncCategoryMappingsTableUpdateCompanionBuilder,
+      (
+        SyncCategoryMappingRow,
+        BaseReferences<
+          _$AppDatabase,
+          $SyncCategoryMappingsTable,
+          SyncCategoryMappingRow
+        >,
+      ),
+      SyncCategoryMappingRow,
+      PrefetchHooks Function()
+    >;
+typedef $$SyncImportConsentsTableCreateCompanionBuilder =
+    SyncImportConsentsCompanion Function({
+      required String userId,
+      required String decision,
+      required int decidedAtEpochMillis,
+      Value<int> rowid,
+    });
+typedef $$SyncImportConsentsTableUpdateCompanionBuilder =
+    SyncImportConsentsCompanion Function({
+      Value<String> userId,
+      Value<String> decision,
+      Value<int> decidedAtEpochMillis,
+      Value<int> rowid,
+    });
+
+class $$SyncImportConsentsTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncImportConsentsTable> {
+  $$SyncImportConsentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get decision => $composableBuilder(
+    column: $table.decision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get decidedAtEpochMillis => $composableBuilder(
+    column: $table.decidedAtEpochMillis,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SyncImportConsentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncImportConsentsTable> {
+  $$SyncImportConsentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get decision => $composableBuilder(
+    column: $table.decision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get decidedAtEpochMillis => $composableBuilder(
+    column: $table.decidedAtEpochMillis,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncImportConsentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncImportConsentsTable> {
+  $$SyncImportConsentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get decision =>
+      $composableBuilder(column: $table.decision, builder: (column) => column);
+
+  GeneratedColumn<int> get decidedAtEpochMillis => $composableBuilder(
+    column: $table.decidedAtEpochMillis,
+    builder: (column) => column,
+  );
+}
+
+class $$SyncImportConsentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncImportConsentsTable,
+          SyncImportConsentRow,
+          $$SyncImportConsentsTableFilterComposer,
+          $$SyncImportConsentsTableOrderingComposer,
+          $$SyncImportConsentsTableAnnotationComposer,
+          $$SyncImportConsentsTableCreateCompanionBuilder,
+          $$SyncImportConsentsTableUpdateCompanionBuilder,
+          (
+            SyncImportConsentRow,
+            BaseReferences<
+              _$AppDatabase,
+              $SyncImportConsentsTable,
+              SyncImportConsentRow
+            >,
+          ),
+          SyncImportConsentRow,
+          PrefetchHooks Function()
+        > {
+  $$SyncImportConsentsTableTableManager(
+    _$AppDatabase db,
+    $SyncImportConsentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncImportConsentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncImportConsentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncImportConsentsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<String> decision = const Value.absent(),
+                Value<int> decidedAtEpochMillis = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncImportConsentsCompanion(
+                userId: userId,
+                decision: decision,
+                decidedAtEpochMillis: decidedAtEpochMillis,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required String decision,
+                required int decidedAtEpochMillis,
+                Value<int> rowid = const Value.absent(),
+              }) => SyncImportConsentsCompanion.insert(
+                userId: userId,
+                decision: decision,
+                decidedAtEpochMillis: decidedAtEpochMillis,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SyncImportConsentsTable, SyncImportConsentRow>(
+                    table,
+                  ),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $SyncImportConsentsTable,
+                    SyncImportConsentRow
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SyncImportConsentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncImportConsentsTable,
+      SyncImportConsentRow,
+      $$SyncImportConsentsTableFilterComposer,
+      $$SyncImportConsentsTableOrderingComposer,
+      $$SyncImportConsentsTableAnnotationComposer,
+      $$SyncImportConsentsTableCreateCompanionBuilder,
+      $$SyncImportConsentsTableUpdateCompanionBuilder,
+      (
+        SyncImportConsentRow,
+        BaseReferences<
+          _$AppDatabase,
+          $SyncImportConsentsTable,
+          SyncImportConsentRow
+        >,
+      ),
+      SyncImportConsentRow,
+      PrefetchHooks Function()
+    >;
+typedef $$SyncOperationsTableCreateCompanionBuilder =
+    SyncOperationsCompanion Function({
+      Value<int> id,
+      required String entityType,
+      required String entityId,
+      required String operation,
+      required int changedAtEpochMillis,
+    });
+typedef $$SyncOperationsTableUpdateCompanionBuilder =
+    SyncOperationsCompanion Function({
+      Value<int> id,
+      Value<String> entityType,
+      Value<String> entityId,
+      Value<String> operation,
+      Value<int> changedAtEpochMillis,
+    });
+
+final class $$SyncOperationsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $SyncOperationsTable, SyncOperationRow> {
+  $$SyncOperationsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<
+    $SyncOperationAcknowledgementsTable,
+    List<SyncOperationAcknowledgementRow>
+  >
+  _syncOperationAcknowledgementsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.syncOperationAcknowledgements,
+    aliasName:
+        'sync_operations__id__sync_operation_acknowledgements__operation_id',
+  );
+
+  $$SyncOperationAcknowledgementsTableProcessedTableManager
+  get syncOperationAcknowledgementsRefs {
+    final manager = $$SyncOperationAcknowledgementsTableTableManager(
+      $_db,
+      $_db.syncOperationAcknowledgements,
+    ).filter((f) => f.operationId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _syncOperationAcknowledgementsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$SyncOperationsTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncOperationsTable> {
+  $$SyncOperationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get entityId => $composableBuilder(
+    column: $table.entityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get operation => $composableBuilder(
+    column: $table.operation,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get changedAtEpochMillis => $composableBuilder(
+    column: $table.changedAtEpochMillis,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> syncOperationAcknowledgementsRefs(
+    Expression<bool> Function(
+      $$SyncOperationAcknowledgementsTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$SyncOperationAcknowledgementsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.syncOperationAcknowledgements,
+          getReferencedColumn: (t) => t.operationId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SyncOperationAcknowledgementsTableFilterComposer(
+                $db: $db,
+                $table: $db.syncOperationAcknowledgements,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SyncOperationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncOperationsTable> {
+  $$SyncOperationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get entityId => $composableBuilder(
+    column: $table.entityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get operation => $composableBuilder(
+    column: $table.operation,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get changedAtEpochMillis => $composableBuilder(
+    column: $table.changedAtEpochMillis,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SyncOperationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncOperationsTable> {
+  $$SyncOperationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get entityType => $composableBuilder(
+    column: $table.entityType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get entityId =>
+      $composableBuilder(column: $table.entityId, builder: (column) => column);
+
+  GeneratedColumn<String> get operation =>
+      $composableBuilder(column: $table.operation, builder: (column) => column);
+
+  GeneratedColumn<int> get changedAtEpochMillis => $composableBuilder(
+    column: $table.changedAtEpochMillis,
+    builder: (column) => column,
+  );
+
+  Expression<T> syncOperationAcknowledgementsRefs<T extends Object>(
+    Expression<T> Function(
+      $$SyncOperationAcknowledgementsTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$SyncOperationAcknowledgementsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.syncOperationAcknowledgements,
+          getReferencedColumn: (t) => t.operationId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$SyncOperationAcknowledgementsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.syncOperationAcknowledgements,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$SyncOperationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncOperationsTable,
+          SyncOperationRow,
+          $$SyncOperationsTableFilterComposer,
+          $$SyncOperationsTableOrderingComposer,
+          $$SyncOperationsTableAnnotationComposer,
+          $$SyncOperationsTableCreateCompanionBuilder,
+          $$SyncOperationsTableUpdateCompanionBuilder,
+          (SyncOperationRow, $$SyncOperationsTableReferences),
+          SyncOperationRow,
+          PrefetchHooks Function({bool syncOperationAcknowledgementsRefs})
+        > {
+  $$SyncOperationsTableTableManager(
+    _$AppDatabase db,
+    $SyncOperationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncOperationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncOperationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncOperationsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> entityType = const Value.absent(),
+                Value<String> entityId = const Value.absent(),
+                Value<String> operation = const Value.absent(),
+                Value<int> changedAtEpochMillis = const Value.absent(),
+              }) => SyncOperationsCompanion(
+                id: id,
+                entityType: entityType,
+                entityId: entityId,
+                operation: operation,
+                changedAtEpochMillis: changedAtEpochMillis,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String entityType,
+                required String entityId,
+                required String operation,
+                required int changedAtEpochMillis,
+              }) => SyncOperationsCompanion.insert(
+                id: id,
+                entityType: entityType,
+                entityId: entityId,
+                operation: operation,
+                changedAtEpochMillis: changedAtEpochMillis,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SyncOperationsTable, SyncOperationRow>(table),
+                  $$SyncOperationsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({syncOperationAcknowledgementsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (syncOperationAcknowledgementsRefs)
+                  db.syncOperationAcknowledgements,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (syncOperationAcknowledgementsRefs)
+                    await $_getPrefetchedDataByColumns<
+                      SyncOperationRow,
+                      $SyncOperationsTable,
+                      SyncOperationAcknowledgementRow,
+                      $SyncOperationAcknowledgementsTable
+                    >(
+                      currentTable: table,
+                      referencedTable: $$SyncOperationsTableReferences
+                          ._syncOperationAcknowledgementsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$SyncOperationsTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).syncOperationAcknowledgementsRefs,
+                      currentColumn: 'id',
+                      referencedColumn: 'operation_id',
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$SyncOperationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncOperationsTable,
+      SyncOperationRow,
+      $$SyncOperationsTableFilterComposer,
+      $$SyncOperationsTableOrderingComposer,
+      $$SyncOperationsTableAnnotationComposer,
+      $$SyncOperationsTableCreateCompanionBuilder,
+      $$SyncOperationsTableUpdateCompanionBuilder,
+      (SyncOperationRow, $$SyncOperationsTableReferences),
+      SyncOperationRow,
+      PrefetchHooks Function({bool syncOperationAcknowledgementsRefs})
+    >;
+typedef $$SyncOperationAcknowledgementsTableCreateCompanionBuilder =
+    SyncOperationAcknowledgementsCompanion Function({
+      required String userId,
+      required int operationId,
+      Value<int> rowid,
+    });
+typedef $$SyncOperationAcknowledgementsTableUpdateCompanionBuilder =
+    SyncOperationAcknowledgementsCompanion Function({
+      Value<String> userId,
+      Value<int> operationId,
+      Value<int> rowid,
+    });
+
+final class $$SyncOperationAcknowledgementsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $SyncOperationAcknowledgementsTable,
+          SyncOperationAcknowledgementRow
+        > {
+  $$SyncOperationAcknowledgementsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $SyncOperationsTable _operationIdTable(_$AppDatabase db) =>
+      db.syncOperations.createAlias(
+        'sync_operation_acknowledgements__operation_id__sync_operations__id',
+      );
+
+  $$SyncOperationsTableProcessedTableManager get operationId {
+    final $_column = $_itemColumn<int>('operation_id')!;
+
+    final manager = $$SyncOperationsTableTableManager(
+      $_db,
+      $_db.syncOperations,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_operationIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$SyncOperationAcknowledgementsTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncOperationAcknowledgementsTable> {
+  $$SyncOperationAcknowledgementsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SyncOperationsTableFilterComposer get operationId {
+    final $$SyncOperationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.operationId,
+      referencedTable: $db.syncOperations,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SyncOperationsTableFilterComposer(
+            $db: $db,
+            $table: $db.syncOperations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SyncOperationAcknowledgementsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncOperationAcknowledgementsTable> {
+  $$SyncOperationAcknowledgementsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+    column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SyncOperationsTableOrderingComposer get operationId {
+    final $$SyncOperationsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.operationId,
+      referencedTable: $db.syncOperations,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SyncOperationsTableOrderingComposer(
+            $db: $db,
+            $table: $db.syncOperations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SyncOperationAcknowledgementsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncOperationAcknowledgementsTable> {
+  $$SyncOperationAcknowledgementsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  $$SyncOperationsTableAnnotationComposer get operationId {
+    final $$SyncOperationsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.operationId,
+      referencedTable: $db.syncOperations,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SyncOperationsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.syncOperations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SyncOperationAcknowledgementsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SyncOperationAcknowledgementsTable,
+          SyncOperationAcknowledgementRow,
+          $$SyncOperationAcknowledgementsTableFilterComposer,
+          $$SyncOperationAcknowledgementsTableOrderingComposer,
+          $$SyncOperationAcknowledgementsTableAnnotationComposer,
+          $$SyncOperationAcknowledgementsTableCreateCompanionBuilder,
+          $$SyncOperationAcknowledgementsTableUpdateCompanionBuilder,
+          (
+            SyncOperationAcknowledgementRow,
+            $$SyncOperationAcknowledgementsTableReferences,
+          ),
+          SyncOperationAcknowledgementRow,
+          PrefetchHooks Function({bool operationId})
+        > {
+  $$SyncOperationAcknowledgementsTableTableManager(
+    _$AppDatabase db,
+    $SyncOperationAcknowledgementsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncOperationAcknowledgementsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$SyncOperationAcknowledgementsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SyncOperationAcknowledgementsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> userId = const Value.absent(),
+                Value<int> operationId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SyncOperationAcknowledgementsCompanion(
+                userId: userId,
+                operationId: operationId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String userId,
+                required int operationId,
+                Value<int> rowid = const Value.absent(),
+              }) => SyncOperationAcknowledgementsCompanion.insert(
+                userId: userId,
+                operationId: operationId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<
+                    $SyncOperationAcknowledgementsTable,
+                    SyncOperationAcknowledgementRow
+                  >(table),
+                  $$SyncOperationAcknowledgementsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({operationId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (operationId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.operationId,
+                        referencedTable:
+                            $$SyncOperationAcknowledgementsTableReferences
+                                ._operationIdTable(db),
+                        referencedColumn:
+                            $$SyncOperationAcknowledgementsTableReferences
+                                ._operationIdTable(db)
+                                .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$SyncOperationAcknowledgementsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SyncOperationAcknowledgementsTable,
+      SyncOperationAcknowledgementRow,
+      $$SyncOperationAcknowledgementsTableFilterComposer,
+      $$SyncOperationAcknowledgementsTableOrderingComposer,
+      $$SyncOperationAcknowledgementsTableAnnotationComposer,
+      $$SyncOperationAcknowledgementsTableCreateCompanionBuilder,
+      $$SyncOperationAcknowledgementsTableUpdateCompanionBuilder,
+      (
+        SyncOperationAcknowledgementRow,
+        $$SyncOperationAcknowledgementsTableReferences,
+      ),
+      SyncOperationAcknowledgementRow,
+      PrefetchHooks Function({bool operationId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3518,4 +5708,16 @@ class $AppDatabaseManager {
       $$ExpensesTableTableManager(_db, _db.expenses);
   $$MonthlyBudgetsTableTableManager get monthlyBudgets =>
       $$MonthlyBudgetsTableTableManager(_db, _db.monthlyBudgets);
+  $$SyncCategoryMappingsTableTableManager get syncCategoryMappings =>
+      $$SyncCategoryMappingsTableTableManager(_db, _db.syncCategoryMappings);
+  $$SyncImportConsentsTableTableManager get syncImportConsents =>
+      $$SyncImportConsentsTableTableManager(_db, _db.syncImportConsents);
+  $$SyncOperationsTableTableManager get syncOperations =>
+      $$SyncOperationsTableTableManager(_db, _db.syncOperations);
+  $$SyncOperationAcknowledgementsTableTableManager
+  get syncOperationAcknowledgements =>
+      $$SyncOperationAcknowledgementsTableTableManager(
+        _db,
+        _db.syncOperationAcknowledgements,
+      );
 }
